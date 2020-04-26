@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Post review to ...</title>
+	</head>
+
+	<body>
+		<h1>Post a Review</h1>
+
+		<form>
+		  <label for="title">Title</label><br>
+		  <input type="text" id="title" name="fname"><br>
+		  <label for="review">Review</label><br>
+		  <input type="text" id="review" name="lname">
+		</form>
+
+		<button onclick='postReview()' type='button'>Post</button>
+
+
+	</body>
+
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script>
+		var kennelName = window.location.href.replace("http://localhost:8000/k/", "").replace("/submit", "");
+
+		function postReview(){
+			var titleText = document.getElementById('title').value;
+			var reviewText = document.getElementById('review').value;
+			var formData = {title:titleText, review:reviewText};
+			// Send POST req
+			$(function(){
+				$.ajax({
+					type: 'POST',
+					url: '/k/' + kennelName + '/submit',
+					data: formData,
+					success: function(data) {
+						console.log('submitted');
+						console.log(data);
+						window.location.href = ("http://localhost:8000/" + data);
+					}
+				});
+			});
+		}
+	</script>
+
+	
+
+</html>

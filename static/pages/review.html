@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>review page</title>
+	</head>
+
+	<body>
+		<h1 id='title'>Title</h1>
+
+
+		<h2 id='review'>Review</h2>
+
+		<h3 id='vote'>Net Growls</h3>
+
+		<button  type="button">Growl</button>
+		<button  type="button">Wag</button>
+
+		<h2 id='comments'>Comments</h2>
+
+		<input type="text" id="comment"><br>
+		<button onclick="postComment(this)" type="button">Post Comment</button>
+	</body>
+
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script>
+	// Get name of kennel from url
+	var kennelName = window.location.href.replace("http://localhost:8000/k/", "").substring(0, window.location.href.replace("http://localhost:8000/k/", "").indexOf("/"));
+
+	// Set html attributes
+	document.title = 'k/' + kennelName;
+	
+</script>
+	<script>
+		// Get name of kennel from url
+		var kennelName = window.location.href.replace("http://localhost:8000/k/", "").substring(0, window.location.href.replace("http://localhost:8000/k/", "").indexOf("/"));
+		var commentId = window.location.href.substring(window.location.href.indexOf("comment") + 9, window.location.href.length);
+
+		// Get the comment details
+		$(function(){
+			var formData = {kennel:kennelName, id: commentId};
+			$.ajax({
+				type: 'GET',
+				url: '/load_review',
+				data: formData,
+				success: function(data) {
+					console.log(data);
+					var idx = data.split(",");
+					var t = idx[0];
+					var r = idx[1];
+					var v = idx[2];
+					//var obj = JSON.parse(data);
+					document.getElementById('title').innerHTML = t;
+					document.getElementById('review').innerHTML = r;
+					document.getElementById('vote').innerHTML = v;
+				}
+			});
+
+		});
+
+		function postComment(btn){
+			console.log(document.getElementById('comment').value);
+			/*
+			var titleText = document.getElementById('title').value;
+			var reviewText = document.getElementById('review').value;
+			var formData = {title:titleText, review:reviewText};
+			// Send POST req
+			$(function(){
+				$.ajax({
+					type: 'POST',
+					url: '/k/' + kennelName + '/submit',
+					data: formData,
+					success: function(data) {
+						console.log('submitted');
+						console.log(data);
+						window.location.href = ("http://localhost:8000/" + data);
+					}
+				});
+			});
+			*/
+		
+		}
+
+	
+	</script>
+
+	
+
+</html>

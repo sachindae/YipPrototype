@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>yip: a community for reviews</title>
+	</head>
+
+	<body>
+		<h1>yip by Team CORGI</h1>
+
+		<a align="center" href="/images/corgi.jpg">
+		  <img src="/images/yip.jpg" alt="A yipping corgi." height=200 width=200 />
+		</a>
+
+		<h2>Top Kennels</h2>
+		<ul id="top_kennels"></ul>
+
+		<h2>Recent Reviews</h2>
+		<ul id="top_reviews"></ul>
+
+	</body>
+
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script>
+
+		// Get the top kennels
+		$(function(){
+
+			$.ajax({
+				type: 'GET',
+				url: '/home_kennels',
+				success: function(data) {
+					document.getElementById('top_kennels').innerHTML = data;
+				}
+			});
+
+		});
+
+		// Get the recent reviews for whole site
+		$(function(){
+
+			$.ajax({
+				type: 'GET',
+				url: '/home_reviews',
+				success: function(data) {
+					document.getElementById('top_reviews').innerHTML = data;
+				}
+			});
+
+		});
+	</script>
+
+	
+
+</html>

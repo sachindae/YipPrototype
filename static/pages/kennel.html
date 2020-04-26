@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+</head>
+
+<body>
+	<h1 id="name"></h1>
+	<button value="Follow" onclick="followUnfollow(this)" type="button">Follow</button>
+	<button onclick="postReview(this)" type="button">Post Review</button>
+	<button onclick="location.href='/'" type="button">Go Home</button>
+
+	<h2>Top Reviews</h2>
+		<ul id="top_reviews">
+
+			<!-- <li><a href="k/restaurants">restaurants</a></li> 
+			<li><a href="k/computers">computers</a></li>
+		-->
+	</ul>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+	// Get name of kennel from url
+	var kennelName = window.location.href.replace("http://localhost:8000/k/", "");
+
+	// Set html attributes
+	document.title = 'k/' + kennelName;
+	document.getElementById("name").innerHTML = 'k/' + kennelName;
+</script>
+<script>
+	// Get name of kennel from url
+	var kennelName = window.location.href.replace("http://localhost:8000/k/", "");
+
+	// Load reviews from kennel
+	$(function(){
+			var formData = {kennel:kennelName};
+			$.ajax({
+				type: 'GET',
+				url: '/load_reviews',
+				data: formData,
+				success: function(data) {
+					document.getElementById('top_reviews').innerHTML = data;
+				}
+			});
+
+		});
+
+	function followUnfollow(btn){
+		// Change follow button text
+		if ( btn.value=="Follow" ){
+			btn.value = "Unfollow";
+			btn.innerHTML = "Unfollow";
+		} else {
+			btn.value = "Follow";
+			btn.innerHTML = "Follow";
+		}
+
+		// Send POST req
+		$(function(){
+			$.ajax({
+				type: 'POST',
+				url: ('/k/' + kennelName + "/" + btn.value.toLowerCase()),
+				success: function(data) {
+					console.log('followed')
+				}
+			});
+		});
+	}
+
+	function postReview(btn){
+		// Send GET req
+		$(function(){
+			$.ajax({
+				type: 'GET',
+				url: ('/k/' + kennelName + '/submit'),
+				success: function(data) {
+					console.log(data);
+					window.location.href = ('/k/' + kennelName + '/submit');
+				}
+			});
+		});
+	}
+</script>
+
+<html>
